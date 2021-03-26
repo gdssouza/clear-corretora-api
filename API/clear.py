@@ -13,6 +13,13 @@ def read_access(response):
 
 class clear:
     def __init__(self, idNumber, dob, password):
+        """Clear API
+
+        Args:
+            idNumber (string): cpf without dots
+            dob (string): dd/mm/yyyy
+            password (string): password
+        """
         self._payloadLogin = {  'Username': idNumber,\
 	                            'DoB':      dob,\
 	                            'Password': password, }
@@ -21,6 +28,11 @@ class clear:
         self._dataAccess = {}
 
     def login(self):
+        """Log in to Clear
+
+        Returns:
+            requests session: session
+        """
         # construindo payload
         r = self._session.get(URL_LOGIN)
         html_doc = r.content
@@ -37,9 +49,25 @@ class clear:
         return self._session
 
     def getDataAccess(self):
+        """Last response access data
+
+        Returns:
+            dict: Keys:
+                        string: acess_token
+                        string: token_type
+                        string: Bearer
+                        string: refresh_toke
+                        string: client_id
+                        string: login
+        """
         return self._dataAccess
 
     def token(self):
+        """Refresh token
+
+        Returns:
+            dict: access data updated with the new token 
+        """
         # construindo payload
         payload = {'ClientId': self._payloadLogin['ClientId']}
         payload["Source"] = 1
